@@ -6,11 +6,12 @@ import com.aqua30.apitesting.domain.model.ApiResponse
 import com.aqua30.apitesting.domain.repository.UserRepository
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * Created by Saurabh
  */
-class UserRepositoryImpl(
+class UserRepositoryImpl @Inject constructor(
     private val testApis: TestApis
 ): UserRepository {
 
