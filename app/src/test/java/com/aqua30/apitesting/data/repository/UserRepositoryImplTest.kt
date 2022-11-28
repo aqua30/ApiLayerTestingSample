@@ -2,10 +2,8 @@
 
 package com.aqua30.apitesting.data.repository
 
-import com.aqua30.apitesting.data.RetrofitHelper
 import com.aqua30.apitesting.data.remote.TestApis
 import com.aqua30.apitesting.data.remote.User
-import com.aqua30.apitesting.domain.model.ApiResponse
 import com.aqua30.apitesting.domain.repository.UserRepository
 import com.google.common.truth.Truth.assertThat
 import com.google.gson.Gson
@@ -16,6 +14,8 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 
 /**
@@ -31,7 +31,10 @@ class UserRepositoryImplTest {
     fun setUp() {
         mockWebServer = MockWebServer()
         mockWebServer.start()
-        testApis = RetrofitHelper.testApiInstance(mockWebServer.url("/").toString())
+        testApis = Retrofit.Builder().baseUrl(mockWebServer.url("/"))
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(TestApis::class.java)
         repository = UserRepositoryImpl(testApis)
     }
 
